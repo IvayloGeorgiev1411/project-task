@@ -1,5 +1,3 @@
-Absolutely! Here's the full content in raw Markdown format — just copy and paste it into your `README.md` file:
-
 # URL Shortener App
 
 ## Prerequisites
