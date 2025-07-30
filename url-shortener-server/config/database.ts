@@ -18,4 +18,4 @@ export const DATABASE_CONFIG: DatabaseConfig = {
   port: parseInt(process.env.DATABASE_PORT || '5432', 10),
 };
 
-export const PORT = parseInt(process.env.DATABASE_PORT || '3001', 10);
+export const PORT = parseInt(process.env.SERVER_PORT || '3001', 10);

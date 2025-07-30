@@ -4,7 +4,7 @@ import { Pool } from 'pg';
 import cors from 'cors';
 import { v4 as uuidv4 } from 'uuid';
 
-import { DATABASE_CONFIG } from './config/database';
+import { DATABASE_CONFIG } from './config/database.js';
 
 dotenv.config();
 
@@ -15,7 +15,9 @@ const pool = new Pool(DATABASE_CONFIG);
 
 app.use(
   cors({
-    origin: `${process.env.BASE_URL}:${process.env.FRONTEND_PORT}`,
+    origin: `${process.env.BASE_URL || 'http://localhost'}:${
+      process.env.FRONTEND_PORT || '5173'
+    }`,
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type', 'X-Forwarded-For', 'X-Fetch-Visit'],
   })
@@ -54,11 +56,15 @@ app.post('/api/shorten', async (req, res) => {
   try {
     await pool.query(
       'INSERT INTO urls (original_url, short_code, secret_code) VALUES ($1, $2, $3)',
-      [url, shortCode, secretCode]
+      [trimmedUrl, shortCode, secretCode]
     );
     res.json({
-      shortUrl: `${process.env.BASE_URL}:${process.env.SERVER_PORT}/r/${shortCode}`,
-      statsUrl: `${process.env.BASE_URL}:${process.env.FRONTEND_PORT}/stats/${secretCode}`,
+      shortUrl: `${process.env.BASE_URL || 'http://localhost'}:${
+        process.env.SERVER_PORT || '3001'
+      }/r/${shortCode}`,
+      statsUrl: `${process.env.BASE_URL || 'http://localhost'}:${
+        process.env.FRONTEND_PORT || '5173'
+      }/stats/${secretCode}`,
     });
   } catch (err) {
     console.error(err);
